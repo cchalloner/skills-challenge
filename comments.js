@@ -1,38 +1,44 @@
-// create web server with express
+// Create web server with express
+// Create a router
+// Create a route to get comments
+// Create a route to post comments
+// Create a route to delete comments
+// Create a route to update comments
+// Export the router
+// Path: server.js
+// Import comments.js
+// Use comments.js as middleware
+// Listen to a port
+
 const express = require('express');
 const app = express();
+const router = express.Router();
+const bodyParser = require('body-parser');
 const port = 3000;
 
-// use express to parse JSON data
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// create an array of comments
-const comments = [
-  { id: 1, author: 'John', text: 'First comment!' },
-  { id: 2, author: 'Jane', text: 'Second comment!' },
-  { id: 3, author: 'Joe', text: 'Third comment!' },
-  { id: 4, author: 'Jill', text: 'Fourth comment!' },
-];
-
-// create a GET route to return all comments
-app.get('/comments', (req, res) => {
-    res.json(comments);
+router.get('/comments', (req, res) => {
+  res.send('Get comments');
 });
 
-// create a GET route to return a specific comment
-app.get('/comments/:id', (req, res) => {
-    const comment = comments.find(c => c.id === parseInt(req.params.id));
-    if (!comment) return res.status(404).send('The comment with the given ID was not found.');
-    res.json(comment);
+router.post('/comments', (req, res) => {
+  res.send('Post comments');
 });
 
-// create a POST route to add a new comment
-app.post('/comments', (req, res) => {
-    const comment = {
-        id: comments.length + 1,
-        // add other properties here
-    };
-    // add comment to the comments array
-    comments.push(comment);
-    res.json(comment);
+router.delete('/comments', (req, res) => {
+  res.send('Delete comments');
 });
+
+router.put('/comments', (req, res) => {
+  res.send('Update comments');
+});
+
+app.use(router);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+module.exports = router;
